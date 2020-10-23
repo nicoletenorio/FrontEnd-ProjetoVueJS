@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Songs Lyrics</title>
+
+<head>
+    <script>
+
+        function begin() {
+            document.querySelector('#btn-srch').addEventListener('click', () => {
+
+                const artist = document.querySelector('#artist').value;
+                const title = document.querySelector('#title').value;
+                console.log(artist, title);
+                
+
+                if (artist.trim().length > 0 && title.trim().length > 0) {
+                    //Não consigo colocar as strings 'artist' e 'title' na url.
+                    //'https://api.lyrics.ovh/v1/artist/title'
+                    url = 'https://api.lyrics.ovh/v1/'+ artist + '/' + title;
+                } else {
+                    document.getElementById('artist').style.border = '2px solid red';
+                    document.getElementById('title').style.border = '2px solid red';
+                }
+
+                fetch(url)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        console.log(data.lyrics);
+                        document.querySelector('#contr').innerHTML = data.lyrics;
+
+                    }).catch((error) => {
+                        alert('Information not valid!');
+                        alert(url);
+                    });
+            })
+        }
+
+    </script>
+
+    <style>
+        body {
+            background-color: #f46b45;
+        }
+
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 40px;
+            color: white;
+        }
+
+        input {
+            width: 200px;
+            height: 20px;
+            border: none;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
+            border: none;
+            outline: none;
+            background-color: rgb(172, 5, 5);
+            color: white;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        #contr {
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+        }
+    </style>
+</head>
+
+<body onload="begin()">
+    <h1>Search Lyrics</h1>
+    <br>
+    <input type="text" id="artist">
+    <input type="text" id="title">
+    <button id="btn-srch">Search</button>
+    <br><br>
+    <pre>
+    <div id="contr"></div>
+    </pre>
+</body>
+
+</html>
